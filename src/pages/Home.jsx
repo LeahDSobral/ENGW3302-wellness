@@ -6,7 +6,7 @@ import Profile from "./Profile";
 import Tutorial from "@/components/Tutorial";
 
 const NAV_ITEMS = [
-  { id: "profile", label: "", icon: "" },
+  { id: "profile", label: "Profile", icon: "👤" },
   { id: "checkin", label: "Check-in", icon: "🌱", primary: true },
   { id: "journal", label: "Journal", icon: "📓" },
 ];

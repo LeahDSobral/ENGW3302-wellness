@@ -1,15 +1,6 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 
-// PLANT STAGE IMAGES:
-// Place your plant PNG files at: public/plants/stage_0.png through public/plants/stage_9.png
-// Stage names: Seed, Seedling, Sprout, Baby Plant, Sapling, Young Plant, Budding, Blooming, Flourishing, Full Bloom
-
-// ANIMAL COLLECTION IMAGES:
-// Place your animal PNG files at: public/animals/animal_0.png through public/animals/animal_7.png
-// Suggested animals: cat, bunny, duck, frog, hedgehog, axolotl, capybara, penguin
-// They appear unlocked every 10 check-ins (10, 20, 30... up to 80 check-ins)
-
 const PLANT_STAGES = [
   { name: "Seed", emoji: "🫘" },
   { name: "Seedling", emoji: "🌱" },
@@ -24,14 +15,14 @@ const PLANT_STAGES = [
 ];
 
 const ANIMAL_SLOTS = [
-  { name: "cat", unlockAt: 10 },
-  { name: "bunny", unlockAt: 20 },
-  { name: "duck", unlockAt: 30 },
-  { name: "frog", unlockAt: 40 },
-  { name: "hedgehog", unlockAt: 50 },
-  { name: "axolotl", unlockAt: 60 },
-  { name: "capybara", unlockAt: 70 },
-  { name: "penguin", unlockAt: 80 },
+  { name: "cat", emoji: "🐱", unlockAt: 10 },
+  { name: "bunny", emoji: "🐰", unlockAt: 20 },
+  { name: "duck", emoji: "🐥", unlockAt: 30 },
+  { name: "frog", emoji: "🐸", unlockAt: 40 },
+  { name: "hedgehog", emoji: "🦔", unlockAt: 50 },
+  { name: "axolotl", emoji: "🦎", unlockAt: 60 },
+  { name: "capybara", emoji: "🐹", unlockAt: 70 },
+  { name: "penguin", emoji: "🐧", unlockAt: 80 },
 ];
 
 const STREAK_REFRAMES = [
@@ -73,6 +64,10 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
   const stageData = PLANT_STAGES[stage];
   const nextStage = PLANT_STAGES[Math.min(stage + 1, 9)];
 
+  const profileEmoji = profilePic >= 0 && unlockedAnimals.includes(profilePic)
+    ? ANIMAL_SLOTS[profilePic]?.emoji
+    : "🌱";
+
   return (
     <div className="min-h-screen p-4 font-mono" style={{ backgroundColor: '#04080f', color: '#ccd6f6' }}>
       <div className="max-w-lg mx-auto">
@@ -87,16 +82,7 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
               className="w-16 h-16 rounded-full flex items-center justify-center text-3xl"
               style={{ backgroundColor: '#0d1b2e', border: '2px solid #4fc3f730' }}
             >
-              {/* Profile pic: if animal selected, show public/animals/animal_X.png */}
-              {profilePic >= 0 && unlockedAnimals.includes(profilePic) ? (
-                <img
-                  src={`/animals/animal_${profilePic}.png`}
-                  alt={ANIMAL_SLOTS[profilePic]?.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                  onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-                />
-              ) : null}
-              <span style={{ display: profilePic >= 0 && unlockedAnimals.includes(profilePic) ? 'none' : 'block' }}>🌱</span>
+              {profileEmoji}
             </div>
             {unlockedAnimals.length > 0 && (
               <button
@@ -145,27 +131,13 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
             <div style={{ fontSize: '10px', color: '#6a85b0' }}>next: {nextStage?.name}</div>
           </div>
 
-          {/* Plant visual */}
+          {/* Plant emoji */}
           <div className="flex justify-center mb-5">
             <div
-              className="w-32 h-32 rounded-2xl flex items-center justify-center relative overflow-hidden"
+              className="w-32 h-32 rounded-2xl flex items-center justify-center"
               style={{ backgroundColor: '#04080f', border: '1px solid #0d1b2e' }}
             >
-              {/* Plant stage image placeholder */}
-              {/* DROP YOUR PNG: public/plants/stage_{stage}.png */}
-              <img
-                src={`/plants/stage_${stage}.png`}
-                alt={stageData.name}
-                className="w-full h-full object-contain"
-                onError={e => { e.target.style.display = 'none'; }}
-              />
-              {/* Fallback emoji */}
-              <span
-                className="text-5xl animate-float absolute"
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                {stageData.emoji}
-              </span>
+              <span className="text-6xl animate-float">{stageData.emoji}</span>
             </div>
           </div>
 
@@ -194,11 +166,7 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
           {/* Stage milestones */}
           <div className="grid grid-cols-10 gap-1 mt-4">
             {PLANT_STAGES.map((s, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center gap-1"
-                title={s.name}
-              >
+              <div key={i} className="flex flex-col items-center gap-1" title={s.name}>
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center text-xs"
                   style={{
@@ -233,21 +201,8 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
                     opacity: isUnlocked ? 1 : 0.5
                   }}
                 >
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#0d1b2e' }}>
-                    {isUnlocked ? (
-                      <>
-                        {/* DROP YOUR PNG: public/animals/animal_{i}.png */}
-                        <img
-                          src={`/animals/animal_${i}.png`}
-                          alt={animal.name}
-                          className="w-full h-full object-cover"
-                          onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
-                        />
-                        <span style={{ display: 'none', fontSize: '24px' }}>🐾</span>
-                      </>
-                    ) : (
-                      <span style={{ color: '#6a85b050', fontSize: '20px' }}>?</span>
-                    )}
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style={{ backgroundColor: '#0d1b2e' }}>
+                    {isUnlocked ? animal.emoji : <span style={{ color: '#6a85b050', fontSize: '20px' }}>?</span>}
                   </div>
                   <span style={{ color: isUnlocked ? '#ccd6f6' : '#6a85b050', fontSize: '9px', textAlign: 'center' }}>
                     {isUnlocked ? animal.name : `${animal.unlockAt} check-ins`}
@@ -283,7 +238,6 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
                 <button onClick={() => setShowAnimalPicker(false)} style={{ color: '#6a85b0' }}>✕</button>
               </div>
               <div className="grid grid-cols-4 gap-3 mb-4">
-                {/* Default option */}
                 <button
                   onClick={() => handleSetProfilePic(-1)}
                   className="flex flex-col items-center gap-1 rounded-xl p-2"
@@ -299,10 +253,8 @@ export default function Profile({ progress, onProgressUpdate, onOpenTutorial }) 
                     className="flex flex-col items-center gap-1 rounded-xl p-2"
                     style={{ backgroundColor: profilePic === idx ? '#4fc3f720' : '#04080f', border: `1px solid ${profilePic === idx ? '#4fc3f7' : '#0d1b2e'}` }}
                   >
-                    <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#0d1b2e' }}>
-                      <img src={`/animals/animal_${idx}.png`} alt={ANIMAL_SLOTS[idx]?.name} className="w-full h-full object-cover"
-                        onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
-                      <span style={{ display: 'none', fontSize: '20px' }}>🐾</span>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ backgroundColor: '#0d1b2e' }}>
+                      {ANIMAL_SLOTS[idx]?.emoji}
                     </div>
                     <span style={{ color: '#ccd6f6', fontSize: '9px' }}>{ANIMAL_SLOTS[idx]?.name}</span>
                   </button>
