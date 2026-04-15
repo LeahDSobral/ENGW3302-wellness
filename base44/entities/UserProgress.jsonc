@@ -1,0 +1,45 @@
+{
+  "name": "UserProgress",
+  "type": "object",
+  "properties": {
+    "total_checkins": {
+      "type": "number",
+      "default": 0
+    },
+    "streak": {
+      "type": "number",
+      "default": 0
+    },
+    "last_checkin_date": {
+      "type": "string"
+    },
+    "plant_stage": {
+      "type": "number",
+      "default": 0
+    },
+    "progress_in_stage": {
+      "type": "number",
+      "default": 0
+    },
+    "unlocked_animals": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": []
+    },
+    "profile_pic_animal": {
+      "type": "number",
+      "default": -1
+    },
+    "tutorial_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed_activities": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": []
+}

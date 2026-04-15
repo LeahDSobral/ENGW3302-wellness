@@ -1,0 +1,36 @@
+{
+  "name": "CheckInLog",
+  "type": "object",
+  "properties": {
+    "checkin_date": {
+      "type": "string",
+      "description": "YYYY-MM-DD format"
+    },
+    "adjectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stress_level": {
+      "type": "number"
+    },
+    "ai_affirmation": {
+      "type": "string"
+    },
+    "ai_recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_exercise": {
+      "type": "string"
+    },
+    "activity_completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}

@@ -1,0 +1,38 @@
+{
+  "name": "JournalEntry",
+  "type": "object",
+  "properties": {
+    "entry_date": {
+      "type": "string",
+      "description": "YYYY-MM-DD format"
+    },
+    "mood_adjectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stress_level": {
+      "type": "number"
+    },
+    "what_went_well": {
+      "type": "string"
+    },
+    "what_was_hard": {
+      "type": "string"
+    },
+    "gratitude": {
+      "type": "string"
+    },
+    "body_feeling": {
+      "type": "string"
+    },
+    "need_more_of": {
+      "type": "string"
+    },
+    "free_write": {
+      "type": "string"
+    }
+  },
+  "required": []
+}
